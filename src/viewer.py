@@ -72,6 +72,13 @@ def draw_plain_ppm():
         index+=3
         col+=1
 
+def get_file_format(file_path):
+    if file_path.lower().endswith(".ppm"):
+        return 'ppm'
+    elif file_path.lower().endswith('.png'):
+        return 'png'
+    else:
+        return 'unknown'
 
 def handle_ppm(file_path):
     global image_data
