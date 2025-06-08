@@ -47,12 +47,18 @@ def main():
 
 #currently treats file as text, not binary data
 def draw_image():
-    # for now only opens in text mode, doesnt return stream of bytes
-    global image_data
-    file = fd.askopenfile()
-    image_data = file.read()
-    if "P3" in image_data:
-        draw_plain_ppm()
+    filetypes = [("Image files", " " + " ".join([f"*.{ext}" for ext in format_handlers.keys()]))]
+    file_path = fd.askopenfilename(filetypes=filetypes)
+
+    if not file_path:
+        return
+
+    file_format = get_file_format(file_path)
+
+    if file_format in format_handlers:
+        format_handlers[file_format](file_path)
+    else:
+        print("File format not supported")
 
 
 
