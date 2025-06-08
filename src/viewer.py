@@ -6,6 +6,34 @@ from PIL import Image, ImageTk
 # 2 globals holding the canvas to draw on and the image data to draw
 canvas = None
 image_data = None
+
+def get_file_format(file_path):
+    return file_path.split('.')[-1].lower()
+
+
+def handle_ppm(file_path):
+    global image_data
+
+    with open(file_path, 'r') as f:
+        image_data = f.read()
+    draw_plain_ppm()
+
+
+def handle_png(file_path):
+    global canvas
+
+    image = Image.open(file_path)
+    photo = ImageTk.PhotoImage(image)
+    canvas.create_image(0, 0, anchor="nw", image=photo)
+    canvas.image = photo
+
+
+# Map file formats to handlers
+format_handlers = {
+    'ppm': handle_ppm,
+    'png': handle_png
+}
+
 def main():
     global canvas
     window = tk.Tk()
@@ -71,28 +99,5 @@ def draw_plain_ppm():
         canvas.create_rectangle(col*pixel_width,row*pixel_height,col*pixel_width+pixel_width,row*pixel_height+pixel_height,fill=(f"#{r}{g}{b}"))
         index+=3
         col+=1
-
-def get_file_format(file_path):
-    if file_path.lower().endswith(".ppm"):
-        return 'ppm'
-    elif file_path.lower().endswith('.png'):
-        return 'png'
-    else:
-        return 'unknown'
-
-def handle_ppm(file_path):
-    global image_data
-
-    with open(file_path,'r') as f:
-        image_data = f.read()
-    draw_plain_ppm()
-
-def handle_png(file_path):
-    global canvas
-
-    image = Image.open(file_path)
-    photo = ImageTk.PhotoImage(image)
-    canvas.create_image(0, 0, anchor="nw",image=photo)
-    canvas.image = photo
 
 main()
