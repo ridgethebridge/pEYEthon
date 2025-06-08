@@ -73,6 +73,13 @@ def draw_plain_ppm():
         col+=1
 
 
+def handle_ppm(file_path):
+    global image_data
+
+    with open(file_path,'r') as f:
+        image_data = f.read()
+    draw_plain_ppm()
+
 def handle_png(file_path):
     global canvas
 
