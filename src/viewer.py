@@ -47,14 +47,18 @@ def main():
 
 #currently treats file as text, not binary data
 def draw_image():
+    # Create list of supported file formts
     filetypes = [("Image files", " " + " ".join([f"*.{ext}" for ext in format_handlers.keys()]))]
+    # Only opens supported file formats
     file_path = fd.askopenfilename(filetypes=filetypes)
 
     if not file_path:
         return
 
+    # Get the file format
     file_format = get_file_format(file_path)
 
+    # Use format handler from map for file format
     if file_format in format_handlers:
         format_handlers[file_format](file_path)
     else:
