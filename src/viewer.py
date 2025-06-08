@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter import ttk
+from PIL import Image, ImageTk
 
 # 2 globals holding the canvas to draw on and the image data to draw
 canvas = None
@@ -43,8 +44,6 @@ def dec_to_hex(dec):
 
     return hex_string
 
-
-
 #returns string since file is opened as text file, later should also return bytes for binary data
 def draw_plain_ppm():
     #plain ppm files are just text
@@ -74,7 +73,12 @@ def draw_plain_ppm():
         col+=1
 
 
-        
+def handle_png(file_path):
+    global canvas
 
+    image = Image.open(file_path)
+    photo = ImageTk.PhotoImage(image)
+    canvas.create_image(0, 0, anchor="nw",image=photo)
+    canvas.image = photo
 
 main()
